@@ -126,6 +126,34 @@ class TodoList
     end
     selection
   end
+
+  def find_by_title(name)
+    self.select { |todo| todo.title == name }.first
+  end
+
+  def all_done
+    self.select(&:done?)
+  end
+
+  def all_not_done
+    self.select { |todo| todo.done? == false }
+  end
+
+  def mark_done(name)
+    found = find_by_title(name)
+    raise NameError, "#{name} not found" if found.nil?
+
+    found.done!
+  end
+
+  def mark_all_done
+    each(&:done!)
+  end
+
+  def mark_all_undone
+    each(&:undone!)
+  end
+
 end
 
 todo1 = Todo.new("Buy milk")
@@ -139,6 +167,5 @@ list.add(todo3)
 
 todo1.done!
 
-results = list.select { |todo| todo.done? }    # you need to implement this method
-
-puts results
+list.mark_done("Clean room")
+puts todo2
