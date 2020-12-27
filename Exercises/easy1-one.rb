@@ -1,11 +1,3 @@
-# def one?(collection)
-#   collection.select { |item| yield(item) }.size == 1
-# end
-
-# def one?(collection, &block)
-#   collection.select(&block).size == 1
-# end
-
 def one?(collection)
   found = []
   collection.each do |item|
@@ -23,3 +15,13 @@ p one?([1, 3, 5, 7]) { |value| value % 5 == 0 } # -> true
 p one?([1, 3, 5, 7]) { |value| true }           # -> false
 p one?([1, 3, 5, 7]) { |value| false }          # -> false
 p one?([]) { |value| true }                     # -> false
+
+def one2?(collection)
+  seen_one = false
+  collection.each do |element|
+    next unless yield(element)
+    return false if seen_one
+    seen_one = true
+  end
+  seen_one
+end
