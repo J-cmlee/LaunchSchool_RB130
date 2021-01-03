@@ -54,7 +54,7 @@ def stringfilter2(text)
   writestring(words)
 end
 
-text = "     whats  a  the matter with kansas   ."
+text = "     whats  a  the matter with kansas."
 p stringfilter(text)
 p stringfilter('')
 p stringfilter('.')
