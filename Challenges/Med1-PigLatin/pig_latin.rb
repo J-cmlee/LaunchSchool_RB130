@@ -47,3 +47,15 @@ class PigLatin
     [consonant_split[1], consonant_split[2]]
   end
 end
+
+class PigLatin3
+  def self.translate(string)
+    string.split(" ").each do |word|
+      if word.scan(/^[aeiou]|^(y|x)[^aeiou]+/).empty?
+        word << word.slice!(/^[^aeiouq]*(qu)*/)
+      end
+      word << "ay"
+    end
+    .join(" ")
+  end
+end
