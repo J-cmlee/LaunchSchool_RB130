@@ -1,5 +1,3 @@
-def hello(&foo)
-  foo.call if block_given?
-end
-
-hello
+test = 1
+array = ['+', 1]
+p test.send(array[0], (array[1]))
