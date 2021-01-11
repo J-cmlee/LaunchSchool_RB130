@@ -11,18 +11,30 @@ class Diamond
     index = 0
     output = ''
     flip = false
-
     while index >= 0
-      blank_row = ' ' * (width * 2 - 1)
-      blank_row[(blank_row.length - 1) / 2 - index] = diamond.letters[index] # left side
-      blank_row[(blank_row.length - 1) / 2 + index] = diamond.letters[index] # right side
-      output.concat(blank_row + "\n")
-
+      output.concat(diamond.make_row(index) + "\n")
       flip = true if index == width - 1
       flip ? index -= 1 : index += 1
     end
     output
   end
+
+  def make_row(index)
+    row = ' ' * (letters.size * 2 - 1)
+    row[calc_left(index)] = letters[index] # left side
+    row[calc_right(index)] = letters[index] # right side
+    row
+  end
+
+  private
+
+  def calc_left(index)
+    letters.size - 1 - index
+  end
+
+  def calc_right(index)
+    letters.size - 1 + index
+  end
 end
 
-# puts Diamond.make_diamond('C')
+puts Diamond.make_diamond('C')
