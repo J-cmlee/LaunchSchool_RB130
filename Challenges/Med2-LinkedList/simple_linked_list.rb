@@ -50,7 +50,11 @@ class SimpleLinkedList
 
   def to_a
     array = []
-    array << pop until empty?
+    current = head
+    until current.nil?
+      array << current.datum
+      current = current.next
+    end
     array
   end
 
