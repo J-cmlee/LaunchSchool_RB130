@@ -1,10 +1,11 @@
+# frozen_string_literal: true
+
 class Element
-  attr_accessor :datum, :next, :prev
+  attr_accessor :datum, :next
 
   def initialize(value, prev = nil)
     @datum = value
-    @prev = prev
-    @prev ? prev.next = self : nil
+    @next = prev
   end
 
   def tail?
@@ -13,27 +14,21 @@ class Element
 end
 
 class SimpleLinkedList
-  attr_reader :size, :head, :tail
+  attr_accessor :size, :head
 
   def initialize
-    @head = nil
-    @tail = nil
     @size = 0
+    @head = nil
   end
 
   def empty?
-    head.nil?
+    size.zero?
   end
 
   def push(value)
-    if empty?
-      self.head = Element.new(value)
-      self.tail = head
-    else
-      self.tail = Element.new(value, tail)
-    end
-    @size += 1
-    tail
+    self.size += 1
+    node = Element.new(value, head)
+    self.head = node
   end
 
   def peek
@@ -41,52 +36,25 @@ class SimpleLinkedList
   end
 
   def pop
-    return ArgumentError, 'list is empty' if size.zero?
-
     self.size -= 1
-    value = tail.datum
-    if tail.prev.nil?
-      self.head = nil
-      self.tail = nil
-    else
-      self.tail = tail.prev
-      tail.next = nil
-    end
+    value = head.datum
+    self.head = head.next
     value
   end
 
   def self.from_a(array)
-    return new if array.nil?
-
     list = new
-    array.each { |ele| list.push(ele) }
+    array&.reverse&.each { |ele| list.push(ele) }
     list
   end
 
   def to_a
-    return [] if size.zero?
-
-    list = []
-    current = head
-    loop do
-      list << current.datum
-      break if current.next.nil?
-
-      current = current.next
-    end
-    list
+    array = []
+    array << pop until empty?
+    array
   end
 
   def reverse
     self.class.from_a(to_a.reverse)
   end
-
-  private
-
-  attr_writer :size, :head, :tail
 end
-
-
-test = SimpleLinkedList.from_a((1..10).to_a)
-p test.size
-p test.reverse.to_a
